@@ -24,7 +24,7 @@ st.sidebar.markdown("""
 1. **Carga el CSV**: El archivo se carga y se muestra una vista previa de los primeros registros.
 2. **Gráficos de Distribución**: Se generan gráficos que muestran la distribución de cada variable en el dataset.
 3. **Correlación**: Se crea un mapa de calor que muestra las correlaciones entre las variables numéricas.
-4. **Informe Final**: Se genera un reporte detallado con insights basados en los análisis, el cual puede descargarse como un archivo PDF.
+4. **Informe Final**: Se genera un reporte detallado con insights basados en los análisis.
 
 📥 ¡Carga tu archivo CSV y explora los datos!
 """)
@@ -216,24 +216,4 @@ if uploaded_file is not None:
     except Exception as e:
         st.write(f"No se pudo generar el reporte final con IA: {e}")
 
-    try:
-        # Descargar el reporte final en PDF
-        import weasyprint
-        from weasyprint import HTML
-
-        html_string = f"""
-        <h1>Reporte Final</h1>
-        <p>{final_report}</p>
-        """
-
-        pdf_file = HTML(string=html_string).write_pdf()
-
-        st.download_button(
-            label="Descargar Reporte Final en PDF",
-            data=pdf_file,
-            file_name="reporte_final.pdf",
-            mime="application/pdf"
-        )
-    except Exception as e:
-        st.write(f"No se pudo generar el reporte en PDF: {e}")
-         
+  

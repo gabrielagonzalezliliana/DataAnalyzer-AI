@@ -8,8 +8,34 @@ from groq import Groq
 GROQ_API_KEY = st.secrets['GROQ_API_KEY']
 client = Groq(api_key=GROQ_API_KEY)
 
+
+
 # App title
-st.title('DataAnalyzer AI')
+st.title('DataAnalyzer AI 📊')
+
+
+# Explicación en el Sidebar
+st.sidebar.markdown("""
+## Explicación de la Aplicación
+
+👨‍💻 Esta aplicación permite cargar un archivo CSV para analizar y visualizar los datos.
+
+### ¿Qué hace la aplicación?
+1. **Carga el CSV**: El archivo se carga y se muestra una vista previa de los primeros registros.
+2. **Gráficos de Distribución**: Se generan gráficos que muestran la distribución de cada variable en el dataset.
+3. **Correlación**: Se crea un mapa de calor que muestra las correlaciones entre las variables numéricas.
+4. **Informe Final**: Se genera un reporte detallado con insights basados en los análisis, el cual puede descargarse como un archivo PDF.
+
+📥 ¡Carga tu archivo CSV y explora los datos!
+""")
+
+# Footer
+st.markdown("""
+<hr>
+<p style="text-align: center; font-size: 12px; color: gray;"> 
+    🚀 DataAnalyzer AI | Desarrollado  ❤ por [Gabriela Gonzalez] | © 2025
+</p>
+""", unsafe_allow_html=True)
 
 # File uploader
 uploaded_file = st.file_uploader("Cargar un archivo CSV", type=["csv"])
@@ -128,7 +154,13 @@ if uploaded_file is not None:
             report_insights.append(detailed_explanation)
 
         except Exception as e:
-            st.write(f"No se pudo generar la explicación con IA: {e}")
+    # Manejar el error específico por el límite de tokens
+            if 'Request too large for model' in str(e):
+                st.write("No se pudo generar la explicación con IA debido a un exceso de tokens. No se mostrará explicación.")
+            else:
+                st.write(f"No se pudo generar la explicación con IA: {e}")
+        #except Exception as e:
+            #st.write(f"No se pudo generar la explicación con IA: {e}")
        
 
     # Mapa de calor de correlación (si hay más de una columna numérica)
